@@ -38,7 +38,7 @@ class MealDetailScreen extends StatelessWidget {
     //as only 1 arg is passed in route so directly accepting as a string
     final mealId = ModalRoute.of(context).settings.arguments as String;
     final selected_Meal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
-    
+
     //List of ingredients
     final ingredeintListView = ListView.builder(
       itemCount: selected_Meal.ingredients.length,
