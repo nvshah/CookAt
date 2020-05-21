@@ -43,6 +43,7 @@ class MainDrawer extends StatelessWidget {
               ),
             ),
           ),
+          //GAP
           SizedBox(
             height: 20,
           ),
@@ -50,14 +51,14 @@ class MainDrawer extends StatelessWidget {
             Icons.restaurant,
             "Meals",
             () {
-              Navigator.of(context).pushNamed('/');
+              Navigator.of(context).pushReplacementNamed('/');
             },
           ),
           buildListTile(
             Icons.filter,
             "Filters",
             () {
-              Navigator.of(context).pushNamed(FiltersScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
             },
           ),
         ],

@@ -2,26 +2,59 @@ import 'package:flutter/material.dart';
 
 import '../widgets/meal_item.dart';
 import '../dummy_data.dart';
+import '../models/meal.dart';
 
-class CategoryMealsScreen extends StatelessWidget {
+class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/category-meals';
-  // final String categoryId;
-  // final String categoryTitle;
 
-  // CategoryMealsScreen(this.categoryId, this.categoryTitle);
+  @override
+  _CategoryMealsScreenState createState() => _CategoryMealsScreenState();
+}
+
+class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
+  String categoryTitle;
+  List<Meal> displayedMeals;
+  //Use to ensure that data are initialised for only one time for State 
+  var _loadedInitData = false;
+  
+  //Remove Meal that is trashed from meal details page
+  void _removeMeal(String mealId) {
+    //here setState is overwritten as didChangeDependencies() runs again
+    //So we basically loads all meals again
+    setState(() {
+      displayedMeals.removeWhere((meal) => meal.id == mealId);
+    });
+  }
+
+  @override
+  void initState() {
+    //...context stuff will not work here so we shift that to didChangeDependencies()
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    //Data in below block is loaded only for 1st time & that is ensured so that we do not face any problem of Syncing & Updation
+    //problem of setState() being overriden by the below data is resolved
+    if (!_loadedInitData) {
+      //When page or state gets loaded then we want to load all meals based on categoryID
+      //fetching data passed on route
+      final routeArgs =
+          ModalRoute.of(context).settings.arguments as Map<String, String>;
+      final categoryId = routeArgs['id'];
+      categoryTitle = routeArgs['title'];
+      //getting all the meals particularly for selected category
+      displayedMeals = DUMMY_MEALS
+          .where((meal) => meal.categories.contains(categoryId))
+          .toList();
+      //So next time when backward navigation happen we do not face problem of overriden
+      _loadedInitData = true;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    //fetching data passed on route
-    final routeArgs =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    final categoryId = routeArgs['id'];
-    final categoryTitle = routeArgs['title'];
-    //getting all the meals particularly for selected category
-    final categoryMeals = DUMMY_MEALS
-        .where((meal) => meal.categories.contains(categoryId))
-        .toList();
-
     //Screen for List of Meals pertaining to particular category
     return Scaffold(
       appBar: AppBar(
@@ -30,15 +63,16 @@ class CategoryMealsScreen extends StatelessWidget {
       body: ListView.builder(
         itemBuilder: (ctxt, index) {
           return MealItem(
-            id: categoryMeals[index].id,
-            title: categoryMeals[index].title,
-            imageUrl: categoryMeals[index].imageUrl,
-            duration: categoryMeals[index].duration,
-            complexity: categoryMeals[index].complexity,
-            affordability: categoryMeals[index].affordability,
+            id: displayedMeals[index].id,
+            title: displayedMeals[index].title,
+            imageUrl: displayedMeals[index].imageUrl,
+            duration: displayedMeals[index].duration,
+            complexity: displayedMeals[index].complexity,
+            affordability: displayedMeals[index].affordability,
+            removeMeal: _removeMeal,
           );
         },
-        itemCount: categoryMeals.length,
+        itemCount: displayedMeals.length,
       ),
     );
   }

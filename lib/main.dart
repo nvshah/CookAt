@@ -4,6 +4,7 @@ import './screens/categories_screen.dart';
 import './screens/category_meals_screen.dart';
 import './screens/meal_details_screen.dart';
 import './screens/tabs_screen_bottom.dart';
+import './screens/filters_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/': (ctxt) => TabsScreen(), 
         CategoryMealsScreen.routeName: (ctxt) => CategoryMealsScreen(),
         MealDetailScreen.routeName: (ctxt) => MealDetailScreen(),
+        FiltersScreen.routeName: (ctxt) => FiltersScreen(),
       },
       // //Useful when no named route are found in routes table
       // onGenerateRoute: (settings){

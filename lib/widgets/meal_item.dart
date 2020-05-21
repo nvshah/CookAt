@@ -10,6 +10,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+  final Function removeMeal;
 
   MealItem({
     @required this.id,
@@ -18,12 +19,24 @@ class MealItem extends StatelessWidget {
     @required this.duration,
     @required this.complexity,
     @required this.affordability,
+    @required this.removeMeal,
   });
 
   void selectMeal(BuildContext ctxt) {
     //Navigate to Meal Details Screen on tapping any image of meal
-    Navigator.of(ctxt).pushNamed(MealDetailScreen.routeName, arguments: id);
+    //then method will be executed when MealDetailScreen is popped out
+    //then() method will not called when pushing is done, but when you are done with the page that is pushed to i,e when that page is popped from stack
+    Navigator.of(ctxt)
+        .pushNamed(MealDetailScreen.routeName, arguments: id)
+        .then((data) {
+          //if we normally select back, in that case also pop() is called but at that time no data will be passed & thus null
+          //print(data)
+          if(data){
+            removeMeal(data);
+          }
+        });
   }
+  
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -57,7 +70,7 @@ class MealItem extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                //MEAL TITLE 
+                //MEAL TITLE
                 Positioned(
                   bottom: 20,
                   right: 10,
@@ -95,21 +108,27 @@ class MealItem extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Icon(Icons.schedule),
-                      SizedBox(width: 6,),
+                      SizedBox(
+                        width: 6,
+                      ),
                       Text('$duration min'),
                     ],
                   ),
                   Row(
                     children: <Widget>[
                       Icon(Icons.work),
-                      SizedBox(width: 6,),
+                      SizedBox(
+                        width: 6,
+                      ),
                       Text(complexity.toString().split('.').last),
                     ],
                   ),
                   Row(
                     children: <Widget>[
                       Icon(Icons.attach_money),
-                      SizedBox(width: 6,),
+                      SizedBox(
+                        width: 6,
+                      ),
                       Text(affordability.toString().split('.').last),
                     ],
                   )

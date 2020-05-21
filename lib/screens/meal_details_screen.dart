@@ -96,6 +96,15 @@ class MealDetailScreen extends StatelessWidget {
           mealDetailsScreenContainer(childWidget: stepsListView),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.delete,
+        ),
+        onPressed: (){
+          //Go back & remove mealId from List for now from meals details screen
+          Navigator.of(context).pop(mealId);
+        },
+      ),
     );
   }
 }
