@@ -37,32 +37,32 @@ class MealDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //as only 1 arg is passed in route so directly accepting as a string
     final mealId = ModalRoute.of(context).settings.arguments as String;
-    final selected_Meal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
+    final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
 
     //List of ingredients
     final ingredeintListView = ListView.builder(
-      itemCount: selected_Meal.ingredients.length,
+      itemCount: selectedMeal.ingredients.length,
       itemBuilder: (ctxt, index) => Card(
         //Card bg color
         color: Theme.of(context).accentColor,
         //Card text
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Text(selected_Meal.ingredients[index]),
+          child: Text(selectedMeal.ingredients[index]),
         ),
       ),
     );
     
     //List of steps
     final stepsListView = ListView.builder(
-      itemCount: selected_Meal.steps.length,
+      itemCount: selectedMeal.steps.length,
       itemBuilder: (ctxt, index) => Column(
         children: <Widget>[
           ListTile(
             //step number
             leading: CircleAvatar(child: Text('# ${index + 1}')),
             //step message
-            title: Text(selected_Meal.steps[index]),
+            title: Text(selectedMeal.steps[index]),
           ),
           //Divider between two steps as a gap seperator
           Divider(),
@@ -73,7 +73,7 @@ class MealDetailScreen extends StatelessWidget {
     //SCRREN
     return Scaffold(
       appBar: AppBar(
-        title: Text('${selected_Meal.title}'),
+        title: Text('${selectedMeal.title}'),
       ),
       body: Column(
         children: <Widget>[
@@ -82,7 +82,7 @@ class MealDetailScreen extends StatelessWidget {
             height: 300,
             width: double.infinity,
             child: Image.network(
-              selected_Meal.imageUrl,
+              selectedMeal.imageUrl,
               fit: BoxFit.cover,
             ),
           ),
