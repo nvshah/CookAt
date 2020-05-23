@@ -3,21 +3,35 @@ import 'package:flutter/material.dart';
 import './categories_screen.dart';
 import './favorite_screen.dart';
 import '../widgets/main_drawer.dart';
+import '../models/meal.dart';
 
 class TabsScreen extends StatefulWidget {
+  final List<Meal> favoriteMeal;
+
+  TabsScreen(this.favoriteMeal);
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
+  //widget obj is not avail at moment so we are not initializing the _pages, as _pages requires widget.favoriteMeals in TabScreen as a argument
   //List of pages corresponding to the tabs
-  final List<Map<String, Object>> _pages = [
-    {'page': CategoriesScreen(), 'title': 'Categories'},
-    {'page': FavoriteScreen(), 'title': 'Thy Favorites'},
-  ];
+  List<Map<String, Object>> _pages;
 
   //hold the current page index <=>
   int _selectedPageIndex = 0;
+  
+  //We have shifted the _pages initialization to initState() because widget object was not available to the 
+  //State class property during initialization
+  //but widget is available in build() & initState() method of State so we can assign the _page value over there
+  @override
+  void initState() {
+    _pages = [
+      {'page': CategoriesScreen(), 'title': 'Categories'},
+      {'page': FavoriteScreen(widget.favoriteMeal), 'title': 'Thy Favorites'},
+    ];
+    super.initState();
+  }
 
   //this will use to change the state & render appropriate screen when user select any tab from tap bar
   void _selectPage(int index) {

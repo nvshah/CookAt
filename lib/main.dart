@@ -25,8 +25,11 @@ class _MyAppState extends State<MyApp> {
     'lactose': false,
   };
 
-  //available Meals that can be coomunicated to category-meals screen
+  //available Meals that can be communicated to category-meals screen & other meals related screen
   List<Meal> _availableMeals = DUMMY_MEALS;
+
+  //favourite meals is maintained over here because we want fav list maintained to communicate with
+  List<Meal> _favoriteMeals = [];
 
   //Filters & Category Meals Screen are availabe over here in main file, so we need to manage filters changes over here
   void _saveFilters(Map<String, bool> newFilters) {
@@ -50,7 +53,30 @@ class _MyAppState extends State<MyApp> {
       }).toList();
     });
   }
-
+  
+  //This method will handle the check/uncheck of favorite meal
+  void _toggleFavorite(String mealId){
+    int existingIndex = _favoriteMeals.indexWhere((meal) => meal.id == mealId);
+    //Meal is already there in favorite list so remove it
+    if(existingIndex >= 0){
+      //Here this approach is not efficient as for toggling between Favorite Screen, Whole App is rebuilded often every time
+      //which is not sign of a good performance
+      //Here we are rebuilding everything for Favorite screen, which seems pretty un reasonable
+      setState(() {
+        _favoriteMeals.removeAt(existingIndex);
+      });
+    }
+    else{
+      setState(() {
+        _favoriteMeals.add(DUMMY_MEALS.firstWhere((meal) => meal.id == mealId));
+      });
+    }// New meal to favorite list
+  }
+ 
+  //check if meal is included in favorite list or not
+  bool _isFavoriteMeal(String mealId){
+    return _favoriteMeals.any((meal) => meal.id == mealId);
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -78,9 +104,9 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/', //default is '/'
       routes: {
         //here ctxt is may be context of new screen going to be coming on screen
-        '/': (ctxt) => TabsScreen(),
+        '/': (ctxt) => TabsScreen(_favoriteMeals),
         CategoryMealsScreen.routeName: (ctxt) => CategoryMealsScreen(_availableMeals),
-        MealDetailScreen.routeName: (ctxt) => MealDetailScreen(),
+        MealDetailScreen.routeName: (ctxt) => MealDetailScreen(_toggleFavorite, _isFavoriteMeal),
         FiltersScreen.routeName: (ctxt) => FiltersScreen(_filters, _saveFilters),
       },
       // //Useful when no named route are found in routes table

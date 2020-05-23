@@ -10,7 +10,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
-  final Function removeMeal;
+  //final Function removeMeal;
 
   MealItem({
     @required this.id,
@@ -19,9 +19,10 @@ class MealItem extends StatelessWidget {
     @required this.duration,
     @required this.complexity,
     @required this.affordability,
-    @required this.removeMeal,
+    //@required this.removeMeal,
   });
-
+  
+  //Use to show details about meal
   void selectMeal(BuildContext ctxt) {
     //Navigate to Meal Details Screen on tapping any image of meal
     //then method will be executed when MealDetailScreen is popped out
@@ -31,8 +32,9 @@ class MealItem extends StatelessWidget {
         .then((data) {
           //if we normally select back, in that case also pop() is called but at that time no data will be passed & thus null
           //print(data)
-          if(data){
-            removeMeal(data);
+          //but if we choose to remove the meal from list then hence let's do so
+          if(data != null){
+            //emoveMeal(data);
           }
         });
   }

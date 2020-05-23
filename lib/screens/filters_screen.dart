@@ -50,6 +50,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       appBar: AppBar(
         title: Text('Your Filters'),
         actions: <Widget>[
+          //SAVE FILTERS BUTTON
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () => widget.saveFilters(<String, bool>{
