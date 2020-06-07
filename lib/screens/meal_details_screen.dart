@@ -53,11 +53,14 @@ class MealDetailScreen extends StatelessWidget {
         //Card text
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Text(selectedMeal.ingredients[index]),
+          child: Text(
+            selectedMeal.ingredients[index],
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );
-    
+
     //List of steps
     final stepsListView = ListView.builder(
       itemCount: selectedMeal.steps.length,
@@ -74,32 +77,34 @@ class MealDetailScreen extends StatelessWidget {
         ],
       ),
     );
-    
+
     //SCRREN
     return Scaffold(
       appBar: AppBar(
         title: Text('${selectedMeal.title}'),
       ),
-      body: Column(
-        children: <Widget>[
-          //IMAGE
-          Container(
-            height: 300,
-            width: double.infinity,
-            child: Image.network(
-              selectedMeal.imageUrl,
-              fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            //IMAGE
+            Container(
+              height: 300,
+              width: double.infinity,
+              child: Image.network(
+                selectedMeal.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          //INGREDIENTS TITLE
-          mealDetailsScreenTitle(context, 'Ingredients'),
-          //INGREDIENTS BODY
-          mealDetailsScreenContainer(childWidget: ingredeintListView),
-          //STEPS TITLE
-          mealDetailsScreenTitle(context, 'Steps'),
-          //STEPS BODY
-          mealDetailsScreenContainer(childWidget: stepsListView),
-        ],
+            //INGREDIENTS TITLE
+            mealDetailsScreenTitle(context, 'Ingredients'),
+            //INGREDIENTS BODY
+            mealDetailsScreenContainer(childWidget: ingredeintListView),
+            //STEPS TITLE
+            mealDetailsScreenTitle(context, 'Steps'),
+            //STEPS BODY
+            mealDetailsScreenContainer(childWidget: stepsListView),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
