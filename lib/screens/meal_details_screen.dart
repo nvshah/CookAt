@@ -55,7 +55,7 @@ class MealDetailScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: Text(
             selectedMeal.ingredients[index],
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).primaryTextTheme.title.color),
           ),
         ),
       ),
